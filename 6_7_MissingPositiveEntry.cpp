@@ -19,8 +19,8 @@ unsigned missing_positive_entry(vector<int> A) {
 }
 
 int main(int argc, char *argv[]) {
-	vector<int> A{3, 5, 4, -1, 5, 1, -1};
-	cout << "Input [3, 5, 4, -1, 5, 1, -1]. Smallest positive missing number: " 
+	vector<int> A{3, 7, 4, -1, 5, 1, 2, -1};
+	cout << "Input [3, 7, 4, -1, 5, 1, 2, -1]. Smallest positive missing number: " 
 		 << missing_positive_entry(A) << endl;
 	return 0;
 }
