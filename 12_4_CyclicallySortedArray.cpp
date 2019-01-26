@@ -3,17 +3,16 @@
 
 using namespace std;
 
+// O(logn) function.
 int search_helper(vector<int>& arr, int p, int q) {
-	if (p > q) return -1;
+	if (p == q) return p;
 	int mid = p + (q - p)/2;
 	
-	//	if ((mid == 0 && arr[mid] < arr[mid+1]) || (arr[mid] < arr[mid-1])) return mid;
-
-	if (arr[mid] < arr[0]) {
+	if (arr[mid] < arr[p]) {
 		if (arr[mid] < arr[mid-1]) return mid;
 		return search_helper(arr, p, mid-1);
 	} else {
-		if (mid == 0 && arr[mid] < arr[mid+1]) return mid;
+		if (mid == p && arr[mid] < arr[mid+1]) return mid;
 		if (arr[mid] > arr[q])
 			return search_helper(arr, mid+1, q);
 		else 
@@ -21,10 +20,25 @@ int search_helper(vector<int>& arr, int p, int q) {
 	}
 }
 
+// Cleaner search function but could be O(n).
+int search_helper2(vector<int>& arr, int p, int q) {
+	if (p == q) return p;
+	int mid = p + (q - p)/2;
+	
+	if (arr[mid] < arr[p]) {
+		return search_helper(arr, p, mid);
+	} else if (arr[mid] > arr[p]) {
+		int i = search_helper(arr, mid+1, q);
+		int j = search_helper(arr, p, mid-1);
+		return (arr[i] < arr[j]? i : j);
+	} else {
+		return (arr[p] < arr[q]? p : q);
+	}
+}
+
 // Return index of the smallest element in a cyclically sorted array.
 // All elements are distinct.
 int search(vector<int>& arr) {
-	if (arr.size() == 1) return 0;
 	return search_helper(arr, 0, arr.size()-1);
 }
 
