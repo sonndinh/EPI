@@ -16,8 +16,14 @@ Order compare(double a, double b) {
 }
 
 double root(double x) {
-	double left = 0;
-	double right = x;
+	double left, right;
+	if (x < 1.0) {
+		left = x;
+		right = 1.0;
+	} else {
+		left = 1.0;
+		right = x;
+	}
 	
 	while (compare(left, right) == SMALLER) {
 		double mid = (left + right)/2;
