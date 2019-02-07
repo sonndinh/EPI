@@ -28,8 +28,29 @@ int match(string s) {
 	return max;
 }
 
+int match2(string s) {
+	// Don't need to use pair. Store indices of the parens instead.
+	stack<int> stk;
+	int max = 0;
+	for (int i = 0; i < s.size(); i++) {
+		if (!stk.empty() && s[stk.top()] == '(' && s[i] == ')') {
+			stk.pop();
+			int len = stk.empty()? i + 1 : i - stk.top();
+			if (max < len)
+				max = len;
+		} else {
+			stk.push(i);
+		}
+	}
+	return max;
+}
+
 int main() {
 	string s = "(()(()())(()()";
-	cout << "String " << s << " ==> Max matched length: " << match(s) << endl;
+	cout << "String " << s << " ==> Max matched length: " << match2(s) << endl;
+	cout << "Input: ";
+	s.clear();
+	cin >> s;
+	cout << "String " << s << " ==> Max matched length: " << match2(s) << endl;
 	return 0;
 }
