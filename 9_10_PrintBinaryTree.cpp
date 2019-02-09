@@ -2,14 +2,9 @@
 #include <memory>
 #include <queue>
 #include <utility>
+#include "common.h"
 
 using namespace std;
-
-template <typename T>
-struct BinaryTreeNode {
-	T data;
-	unique_ptr<BinaryTreeNode<T>> left, right;
-};
 
 void print(unique_ptr<BinaryTreeNode<int>>& root) {
 	queue<int> depths;

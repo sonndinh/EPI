@@ -1,21 +1,16 @@
 #include <iostream>
 #include <memory>
 #include <cstddef>
+#include "common.h"
 
 using namespace std;
 
-template <typename T>
-struct ListNode {
-	T data;
-	shared_ptr<ListNode<T> > next;
-};
-
-shared_ptr<ListNode<int> > merge(shared_ptr<ListNode<int> > L, shared_ptr<ListNode<int> > F) {
+shared_ptr<ListNode<int>> merge(shared_ptr<ListNode<int>> L, shared_ptr<ListNode<int>> F) {
 	if (!L) return F;
 	if (!F) return L;
 
-	shared_ptr<ListNode<int> > M;
-	shared_ptr<ListNode<int> > curr;
+	shared_ptr<ListNode<int>> M;
+	shared_ptr<ListNode<int>> curr;
 
 	if (L->data < F->data) {
 		M = L;
