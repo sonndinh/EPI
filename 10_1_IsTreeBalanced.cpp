@@ -17,6 +17,7 @@ bool helper(const unique_ptr<BinaryTreeNode<int>>& root, int& height) {
 		l_balanced = true;
 		l_height = 0;
 	}
+	if (!l_balanced) return false;
 
 	if (root->right != nullptr) {
 		r_balanced = helper(root->right, r_height);
@@ -25,12 +26,10 @@ bool helper(const unique_ptr<BinaryTreeNode<int>>& root, int& height) {
 		r_balanced = true;
 		r_height = 0;
 	}
+	if (!r_balanced) return false;
 	
 	// Height of the root.
 	height = max(l_height, r_height);
-
-	// If either left or right subtree is imbalanced, the whole tree is imbalanced.
-	if (!l_balanced || !r_balanced) return false;
 
 	// Else, check their heights.
 	return (l_height <= r_height ? r_height - l_height <= 1 : l_height - r_height <= 1);
@@ -53,8 +52,8 @@ int main() {
 	root->left->left->data = 271;
 	root->left->right = unique_ptr<BinaryTreeNode<int>> (new struct BinaryTreeNode<int>);
 	root->left->right->data = 561;
-	root->right->left = unique_ptr<BinaryTreeNode<int>> (new struct BinaryTreeNode<int>);
-	root->right->left->data = 5;
+	//	root->right->left = unique_ptr<BinaryTreeNode<int>> (new struct BinaryTreeNode<int>);
+	//	root->right->left->data = 5;
 	//	root->right->right = unique_ptr<BinaryTreeNode<int>> (new struct BinaryTreeNode<int>);
 	//	root->right->right->data = 89;
 	root->left->left->left = unique_ptr<BinaryTreeNode<int>> (new struct BinaryTreeNode<int>);
