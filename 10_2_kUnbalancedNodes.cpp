@@ -4,11 +4,14 @@
 
 using namespace std;
 
+// Global pointer for denoting 
+const unique_ptr<BinaryTreeNode<int>> gNull = nullptr;
+
 // Return the node if the subtree rooted at this node is unbalanced, null otherwise.
 const unique_ptr<BinaryTreeNode<int>>& k_unbalanced(const unique_ptr<BinaryTreeNode<int>>& root, int& num_nodes, int k) {
 	if (!root) {
 		num_nodes = 0;
-		return nullptr;
+		return gNull;
 	}
 
 	int left_nodes, right_nodes;
@@ -21,12 +24,12 @@ const unique_ptr<BinaryTreeNode<int>>& k_unbalanced(const unique_ptr<BinaryTreeN
 	if (abs(left_nodes - right_nodes) > k) return root;
 	
 	num_nodes = left_nodes + right_nodes + 1;
-	return nullptr;
+	return gNull;
 }
 
 const unique_ptr<BinaryTreeNode<int>>& find(const unique_ptr<BinaryTreeNode<int>>& root, int k) {
 	if (!root)
-		return nullptr;
+		return gNull;
 
 	int total_nodes;
 	const unique_ptr<BinaryTreeNode<int>>& node = k_unbalanced(root, total_nodes, k);
