@@ -42,11 +42,12 @@ const unique_ptr<BinaryTreeNode<int>>& lca(const unique_ptr<BinaryTreeNode<int>>
 		return gNull;
 	}
 
+	// Search left subtree
 	bool a_cond, b_cond;
 	auto& left = lca(root->left, a, a_cond, b, b_cond);
 	if (left != nullptr) return left;
 	if (a_cond == true && b_cond == false) {
-		if (is_ancestor(root, b) == true) {
+		if (is_ancestor(root->right, b) == true) {
 			return root;
 		} else {
 			ances_a = true;
@@ -54,7 +55,7 @@ const unique_ptr<BinaryTreeNode<int>>& lca(const unique_ptr<BinaryTreeNode<int>>
 			return gNull;
 		}
 	} else if (a_cond == false && b_cond == true) {
-		if (is_ancestor(root, a) == true) {
+		if (is_ancestor(root->right, a) == true) {
 			return root;
 		} else {
 			ances_a = false;
@@ -68,10 +69,11 @@ const unique_ptr<BinaryTreeNode<int>>& lca(const unique_ptr<BinaryTreeNode<int>>
 		return gNull;
 	}
 
+	// Search right subtree
 	auto& right = lca(root->right, a, a_cond, b, b_cond);
 	if (right != nullptr) return right;
 	if (a_cond == true && b_cond == false) {
-		if (is_ancestor(root, b) == true) {
+		if (is_ancestor(root->left, b) == true) {
 			return root;
 		} else {
 			ances_a = true;
@@ -79,7 +81,7 @@ const unique_ptr<BinaryTreeNode<int>>& lca(const unique_ptr<BinaryTreeNode<int>>
 			return gNull;
 		}
 	} else if (a_cond == false && b_cond == true) {
-		if (is_ancestor(root, a) == true) {
+		if (is_ancestor(root->left, a) == true) {
 			return root;
 		} else {
 			ances_a = false;
@@ -93,6 +95,37 @@ const unique_ptr<BinaryTreeNode<int>>& lca(const unique_ptr<BinaryTreeNode<int>>
 		return gNull;
 	}
 	
+}
+
+// Shorter implementation counting the number of either node a or b which appear in a given subtree.
+// Don't need to consider node a or b specifically.
+const unique_ptr<BinaryTreeNode<int>>& helper(const unique_ptr<BinaryTreeNode<int>>& root,
+											  const unique_ptr<BinaryTreeNode<int>>& a,
+											  const unique_ptr<BinaryTreeNode<int>>& b, int& num_nodes) {
+	if (root == nullptr) {
+		num_nodes = 0;
+		return gNull;
+	}
+	
+	int num_nodes_left;
+	auto& left = helper(root->left, a, b, num_nodes_left);
+	if (num_nodes_left == 2) return left;
+
+	int num_nodes_right;
+	auto& right = helper(root->right, a, b, num_nodes_right);
+	if (num_nodes_right == 2) return right;
+
+	if (root == a || root == b) num_nodes = num_nodes_left + num_nodes_right + 1;
+	else num_nodes = num_nodes_left + num_nodes_right;
+
+	return (num_nodes == 2? root : gNull);
+}
+
+const unique_ptr<BinaryTreeNode<int>>& lca2(const unique_ptr<BinaryTreeNode<int>>& root,
+											const unique_ptr<BinaryTreeNode<int>>& a,
+											const unique_ptr<BinaryTreeNode<int>>& b) {
+	int num_nodes;
+	return helper(root, a, b, num_nodes);
 }
 
 int main() {
@@ -113,8 +146,9 @@ int main() {
 	root->left->left->left = unique_ptr<BinaryTreeNode<int>> (new struct BinaryTreeNode<int>);
 	root->left->left->left->data = 500;
 
-	bool a_bool, b_bool;
-	const unique_ptr<BinaryTreeNode<int>>& n = lca(root, root->left->left->left, a_bool, root->right->left, b_bool);
+	//	bool a_bool, b_bool;
+	//	const unique_ptr<BinaryTreeNode<int>>& n = lca(root, root->left->left->left, a_bool, root->right->left, b_bool);
+	auto& n = lca2(root, root->left->left->left, root->left->right);
 	if (n != nullptr) {
 		cout << "Ancestor is " << n->data << endl;
 	} else {
