@@ -15,5 +15,5 @@ struct BinaryTreeNode {
 template <typename T>
 struct BinaryTreeNode2 {
 	T data;
-	std::unique_ptr<BinaryTreeNode<T>> parent;
+	std::shared_ptr<BinaryTreeNode2<T>> parent;
 };
