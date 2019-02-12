@@ -11,3 +11,9 @@ struct BinaryTreeNode {
 	T data;
 	std::unique_ptr<BinaryTreeNode<T>> left, right;
 };
+
+template <typename T>
+struct BinaryTreeNode2 {
+	T data;
+	std::unique_ptr<BinaryTreeNode<T>> parent;
+};
