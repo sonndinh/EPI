@@ -6,7 +6,7 @@ using namespace std;
 // Get depth of node a in a given binary tree.
 int depth(shared_ptr<BinaryTreeNode2<int>>& root, shared_ptr<BinaryTreeNode2<int>>& n) {
 	int d = 0;
-	shared_ptr<BinaryTreeNode2<int>>& tmp = n;
+	shared_ptr<BinaryTreeNode2<int>> tmp = n;
 	// Parent pointer of root node is null.
 	while (tmp->parent != nullptr) {
 		d++;
@@ -15,13 +15,13 @@ int depth(shared_ptr<BinaryTreeNode2<int>>& root, shared_ptr<BinaryTreeNode2<int
 	return d;
 }
 
-const shared_ptr<BinaryTreeNode2<int>>& lca(shared_ptr<BinaryTreeNode2<int>>& root,
+const shared_ptr<BinaryTreeNode2<int>> lca(shared_ptr<BinaryTreeNode2<int>>& root,
 											shared_ptr<BinaryTreeNode2<int>>& a,
 											shared_ptr<BinaryTreeNode2<int>>& b) {
 	int a_dep = depth(root, a);
 	int b_dep = depth(root, b);
-	shared_ptr<BinaryTreeNode2<int>>& lower_node = a_dep < b_dep ? b : a;
-	shared_ptr<BinaryTreeNode2<int>>& higher_node = a_dep < b_dep ? a : b;
+	shared_ptr<BinaryTreeNode2<int>> lower_node = a_dep < b_dep ? b : a;
+	shared_ptr<BinaryTreeNode2<int>> higher_node = a_dep < b_dep ? a : b;
 	int diff = abs(a_dep - b_dep);
 
 	while (diff > 0) {
@@ -60,7 +60,7 @@ int main() {
 	leave2->parent->parent = leave3->parent->parent;
 	shared_ptr<BinaryTreeNode2<int>> root = leave2->parent->parent;
 
-	auto& n = lca(root, leave1, leave3);
+	auto& n = lca(root, leave3, leave4);
 	cout << "LCA is: " << n->data << endl;
 	
 	return 0;
