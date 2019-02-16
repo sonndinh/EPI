@@ -11,11 +11,7 @@ vector<int> median(const vector<int>& sequence) {
 
 	vector<int> ret;
 	for (int i = 0; i < sequence.size(); i++) {
-		cout << "Here";
-		cout << "Top: " << min_heap.top() << endl;
-		cout << "There";
-
-		if (sequence[i] < min_heap.top()) {
+		if (!min_heap.empty() && sequence[i] < min_heap.top()) {
 			max_heap.push(sequence[i]);
 		} else {
 			min_heap.push(sequence[i]);
