@@ -4,14 +4,14 @@
 using namespace std;
 
 // Find the first occurrence of k in a subtree rooted at a given node. 
-const unique_ptr<BSTNode<int>>& find(const unique_ptr<BSTNode<int>>& node, int k) {
+struct BSTNode<int>* find(const unique_ptr<BSTNode<int>>& node, int k) {
 	if (node == nullptr) return nullptr;
 
 	// Inorder traversal.
-	auto& ln = find(node->left, k);
+	struct BSTNode<int> *ln = find(node->left, k);
 	if (ln) return ln;
-	if (node->data == k) return node;
-	auto& rn = find(node->right, k);
+	if (node->data == k) return node.get();
+	struct BSTNode<int> *rn = find(node->right, k);
 	if (rn) return rn;
 	return nullptr;
 }
@@ -34,7 +34,7 @@ int main() {
 	root->left->left->left = unique_ptr<BSTNode<int>> (new struct BSTNode<int>);
 	root->left->left->left->data = 50;
 
-	auto& ret = find(root, 40);
+	struct BSTNode<int> *ret = find(root, 60);
 	cout << (ret? "Found!" : "Not Found!") << endl;
 	return 0;
 }
