@@ -39,7 +39,7 @@ int partition(vector<int>& A, int p, int r) {
 	return i+1;
 }
 
-// O(n). Return the (n - k + 1)th smallest element.
+// O(n). Return the ith smallest element. Recursive implementation.
 int select(vector<int>& A, int p, int r, int i) {
 	if (p == r) return A[p];
 	int q = partition(A, p, r);
@@ -53,6 +53,22 @@ int select(vector<int>& A, int p, int r, int i) {
 	}
 }
 
+// Return the kth largest element. Iterative implementation.
+int select2(vector<int>& A, int k) {
+	int p = 0, r = A.size() - 1;
+	while (p <= r) {
+		int q = partition(A, p, r);
+		if (q == A.size() - k) return A[q];
+		else if (q < A.size() - k) {
+			p = q + 1;
+		} else {
+			r = q - 1;
+		}
+	}
+	// Should never reach here.
+	return numeric_limits<int>::min();
+}
+
 int main() {
 	vector<int> arr{2, 5, 3, 12, 9, 8, 7, 10};
 	cout << "Input: ";
@@ -61,16 +77,16 @@ int main() {
 	}
 	cout << endl;
 	/*
-	cout << "First largest: " << k_largest(arr, 1) << endl;
-	cout << "Second largest: " << k_largest(arr, 2) << endl;
-	cout << "Third largest: " << k_largest(arr, 3) << endl;
-	cout << "Fourth largest: " << k_largest(arr, 4) << endl;
-	*/
 	int size = arr.size();
 	cout << "First largest: " << select(arr, 0, size-1, size) << endl;
 	cout << "Second largest: " << select(arr, 0, size-1, size-1) << endl;
 	cout << "Third largest: " << select(arr, 0, size-1, size-2) << endl;
 	cout << "Fourth largest: " << select(arr, 0, size-1, size-3) << endl;
-	
+	*/
+	cout << "First largest: " << select2(arr, 1) << endl;
+	cout << "Second largest: " << select2(arr, 2) << endl;
+	cout << "Third largest: " << select2(arr, 3) << endl;
+	cout << "Fourth largest: " << select2(arr, 4) << endl;
+	cout << "Fifth largest: " << select2(arr, 5) << endl;
 	return 0;
 }
