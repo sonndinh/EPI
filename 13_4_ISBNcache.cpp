@@ -16,12 +16,12 @@ public:
 	double lookup(int isbn) {
 		unordered_map<int, LRU::iterator>::iterator it = isbn_to_iter.find(isbn);
 		if (it == isbn_to_iter.end())
-			throw length_error("Nonexist isbn!");
+			throw length_error("Nonexisting isbn!");
 
 		double price = it->second->second;
 		lru.emplace_front(isbn, price);
-		isbn_to_iter[isbn] = lru.begin();
 		lru.erase(it->second);
+		isbn_to_iter[isbn] = lru.begin();
 		return price;
 	}
 
@@ -39,10 +39,10 @@ public:
 	void erase(int isbn) {
 		unordered_map<int, LRU::iterator>::iterator it = isbn_to_iter.find(isbn);
 		if (it == isbn_to_iter.end())
-			throw length_error("Nonexist isbn!");
+			throw length_error("Nonexisting isbn!");
 
-		isbn_to_iter.erase(isbn);
 		lru.erase(it->second);
+		isbn_to_iter.erase(isbn);
 	}
 	
 private:
@@ -66,6 +66,6 @@ int main() {
 		cout << "Erasing book " << i << endl;
 		cache.erase(i);
 	}
-	
+
 	return 0;
 }
