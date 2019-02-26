@@ -36,7 +36,7 @@ void print_permu(const vector<vector<int>>& sols, int size) {
 }
 
 int main() {
-	vector<int> arr{2, 3, 5};
+	vector<int> arr{2, 3, 5, 7, 9};
 	vector<vector<int>> permutations;
 	vector<int> curr;
 	permu(permutations, curr, arr);
