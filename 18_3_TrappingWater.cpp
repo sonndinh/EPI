@@ -5,6 +5,7 @@ using namespace std;
 
 // Return the capacity of a container.
 int capacity(const vector<int>& h) {
+	if (h.size() == 0) return 0;
 	// Store pairs of indices for intervals within which water is trapped.
 	vector<int> peaks;
 	// Keep track the index corresponding to the max to the left side.
@@ -41,11 +42,6 @@ int capacity(const vector<int>& h) {
 		peaks.push_back(size-1);
 	}
 	
-	for (int i : peaks) {
-		cout << i << " ";
-	}
-	cout << endl;
-	
 	int total = 0;
 	for (int i = 0; i < peaks.size(); i++) {
 		if (i+1 < peaks.size()) {
@@ -60,11 +56,41 @@ int capacity(const vector<int>& h) {
 	return total;
 }
 
+int epi_sol(const vector<int>& h) {
+	if (h.size() == 0) return 0;
+	int max_idx = 0;
+	for (int i = 1; i < h.size(); i++) {
+		if (h[i] > h[max_idx]) max_idx = i;
+	}
+
+	int total = 0;
+	int left = h.front();
+	for (int i = 1; i < max_idx; i++) {
+		if (h[i] >= left) {
+			left = h[i];
+		} else {
+			total += left - h[i];
+		}
+	}
+
+	int right = h.back();
+	for (int i = h.size()-2; i > max_idx; i--) {
+		if (h[i] >= right) {
+			right = h[i];
+		} else {
+			total += right - h[i];
+		}
+	}
+	return total;
+}
+
 int main() {
 	//	vector<int> h{4, 0, 2, 0, 2};
 	//	vector<int> h{6, 1, 5, 2, 3, 2, 4};
 	vector<int> h{6, 1, 2, 4, 4, 2, 3, 1, 5, 2};
 	int ret = capacity(h);
 	cout << "Capacity: " << ret << endl;
+	ret = epi_sol(h);
+	cout << "EPI solution: " << ret << endl;
 	return 0;
 }
