@@ -45,9 +45,7 @@ vector<int> sp_fewest_edges(vector<Vertex*>& G, int s, int t) {
 		S[u->id] = u;
 		Q.erase(Q.cbegin());
 
-		cout << "Top vertex: " << u->id << endl;
 		for (const pair<int, int>& p : u->adjacents) {
-			cout << "Neighbor: " << p.first << ", weight: " << p.second << endl;
 			Vertex *v = G[p.first];
 			int weight = p.second;
 			if (v->distance > u->distance + weight) {
@@ -55,19 +53,14 @@ vector<int> sp_fewest_edges(vector<Vertex*>& G, int s, int t) {
 				v->edges = u->edges + 1;
 				v->parent = u->id;
 				Q.emplace(v);
-				cout << "Updating vertex " << v->id << ": distance: " << v->distance << ", edge: " << v->edges << ", parent: " << v->parent << endl;
 			} else if (v->distance == u->distance + weight && v->edges > u->edges + 1) {
 				v->edges = u->edges + 1;
 				v->parent = u->id;
 				Q.emplace(v);
-				cout << "Updating vertex " << t << ": edge: " << v->edges << ", parent: " << v->parent << endl;
 			}
 		}
-		cout << "Done vertex " << u->id << endl;
 	}
 
-	cout << "Going to construct path...." << endl;
-	
 	// Construct path.
 	vector<int> path;
 	Vertex *curr = S[t];
@@ -80,10 +73,10 @@ vector<int> sp_fewest_edges(vector<Vertex*>& G, int s, int t) {
 }
 
 int main() {
-	Vertex v1{0, {{1, 1}, {2, 4}, {4, 6}}};
+	Vertex v1{0, {{1, 1}, {2, 4}, {4, 7}}};
 	Vertex v2{1, {{3, 5}}};
 	Vertex v3{2, {{4, 3}}};
-	Vertex v4{3, {{0, 3}, {4, 1}, {5, 2}}};
+	Vertex v4{3, {{0, 3}, {4, 1}, {5, 3}}};
 	Vertex v5{4, {{5, 2}}};
 	Vertex v6{5};
 	vector<Vertex*> G{&v1, &v2, &v3, &v4, &v5, &v6};
