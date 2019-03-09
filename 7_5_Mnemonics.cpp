@@ -41,7 +41,7 @@ int main() {
 										  {'5', "JKL"}, {'6', "MNO"}, {'7', "PQRS"}, {'8', "TUV"}, {'9', "WXYZ"}};
 	string number = "314";
 	vector<string> mne = mnemonics(number, keypad);
-	cout << "List of mnemonics: ";
+	cout << mne.size() << " mnemonics found: ";
 	for (string s : mne) {
 		cout << s << " ";
 	}
