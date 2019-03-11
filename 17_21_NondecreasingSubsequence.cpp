@@ -1,45 +1,50 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
 using namespace std;
 
-vector<int> helper(const vector<int>& A, int k) {
-	vector<int> ret;
-	int curr = A[k];
-	for (int i = k; i >= 0; i--) {
-		if (A[i] <= curr) {
-			ret.push_back(i);
-			curr = A[i];
-		}
-	}
-	reverse(ret.begin(), ret.end());
-	return ret;
-}
-
-// Return a longest nondecreasing subsequence.
+// Using DP. Time O(n^2), space O(n).
 vector<int> lns(const vector<int>& A) {
-	vector<int> subseq;
-	for (int i = 0; i < A.size(); i++) {
-		if (subseq.size() == 0) {
-			subseq.push_back(i);
+	if (A.size() == 0) return {};
+	
+	// Map from each index to a longest nondecreasing subsequence ending at that index.
+	unordered_map<int, vector<int>> idx_to_subseq;
+	int largest_idx = -1; // Index corresponds to a longest nondecreasing subsequence so far.
+	for (int i = 0; i < A.size(); ++i) {
+		if (i == 0) {
+			idx_to_subseq[i] = {i};
+			largest_idx = i;
 		} else {
-			if (A[subseq.back()] <= A[i]) {
-				subseq.push_back(i);
+			int max = 1, max_idx = -1;
+			for (int j = i-1; j >= 0; --j) {
+				if (A[i] >= A[j] && idx_to_subseq[j].size() + 1 > max) {
+					max = idx_to_subseq[j].size() + 1;
+					max_idx = j;
+				}
+			}
+			if (max_idx == -1) {
+				idx_to_subseq[i] = {i};
 			} else {
-				// Compute a longest subsequence which contains A[i].
-				vector<int> tmp = helper(A, i);
-				if (tmp.size() > subseq.size())
-					subseq = tmp;
+				vector<int> tmp = idx_to_subseq[max_idx];
+				tmp.push_back(i);
+				idx_to_subseq[i] = tmp;
+			}
+			
+			// Update the index of last entry of the current longest nondecreasing subsequence.
+			if (idx_to_subseq[i].size() > idx_to_subseq[largest_idx].size()) {
+				largest_idx = i;
 			}
 		}
 	}
-	return subseq;
+
+	return idx_to_subseq[largest_idx];
 }
 
 int main() {
-	//	vector<int> A{0, 8, 4, 12, 2, 10, 6, 14, 1, 9};
+	vector<int> A{0, 8, 4, 12, 2, 10, 6, 14, 1, 9};
 	//	vector<int> A{0, 8, 2, 12, 4, 6, 10, 14, 1, 9};
-	vector<int> A{0, 8, 2, 12, 10, 4, 6, 1, 14, 9};
+	//	vector<int> A{0, 8, 2, 12, 10, 4, 6, 1, 14, 9};
 	vector<int> ret = lns(A);
 	cout << "Longest nondecreasing subsequence: ";
 	for (int a : ret) {
