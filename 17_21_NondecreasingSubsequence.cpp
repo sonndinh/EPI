@@ -4,7 +4,7 @@
 #include <unordered_map>
 using namespace std;
 
-// Using DP. Time O(n^2), space O(n).
+// Using DP. Time O(n^2), space O(n^2).
 vector<int> lns(const vector<int>& A) {
 	if (A.size() == 0) return {};
 	
