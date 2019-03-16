@@ -7,7 +7,12 @@ shared_ptr<ListNode<int>> reverse(shared_ptr<ListNode<int>> L, int s, int f) {
 	if (s >= f) return L;
 	
 	int i = 1;
-	shared_ptr<ListNode<int>> curr = L, before = nullptr, last = nullptr, next1 = nullptr, next2 = nullptr;
+	
+	shared_ptr<ListNode<int>> curr = L;
+	// Pointers to entry right before the sublist and the last in reversed order.
+	shared_ptr<ListNode<int>> before = nullptr, last = nullptr;
+	// Pointers to the two next entries in the sublist.
+	shared_ptr<ListNode<int>> next1 = nullptr, next2 = nullptr;
 	
 	while (i <= f && curr) {
 		if (i < s) {
@@ -36,6 +41,27 @@ shared_ptr<ListNode<int>> reverse(shared_ptr<ListNode<int>> L, int s, int f) {
 	return L;
 }
 
+shared_ptr<ListNode<int>> reverse2(shared_ptr<ListNode<int>> L, int s, int f) {
+	if (s == f) return L;
+
+	auto dummy_head = make_shared<ListNode<int>> (ListNode<int>{0, L});
+	auto sublist_head = dummy_head;
+	int k = 1;
+	while (k++ < s) {
+		sublist_head = sublist_head->next;
+	}
+
+	auto sublist_iter = sublist_head->next;
+	while (s++ < f) {
+		auto tmp = sublist_iter->next;
+		sublist_iter->next = tmp->next;
+		tmp->next = sublist_head->next;
+		sublist_head->next = tmp;
+	}
+	return dummy_head->next;
+}
+
+
 void print(shared_ptr<ListNode<int>> L) {
 	while (L) {
 		if (L->next) {
@@ -59,7 +85,7 @@ int main() {
 	n4->data = 4; n4->next = n5;
 	n5->data = 5; n5->next = nullptr;
 
-	L = reverse(L, 2, 5);
+	L = reverse2(L, 1, 3);
 	print(L);
 	return 0;
 }
