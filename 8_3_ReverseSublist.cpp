@@ -85,7 +85,7 @@ int main() {
 	n4->data = 4; n4->next = n5;
 	n5->data = 5; n5->next = nullptr;
 
-	L = reverse2(L, 1, 3);
+	L = reverse2(L, 2, 4);
 	print(L);
 	return 0;
 }
