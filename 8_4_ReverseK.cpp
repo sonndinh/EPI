@@ -31,7 +31,7 @@ shared_ptr<ListNode<int>> reverse(shared_ptr<ListNode<int>> L, int k) {
 		int i = 1;
 		bool can_reverse = false;
 		shared_ptr<ListNode<int>> tmp = head;
-		while (tmp->next) {
+		while (tmp && tmp->next) {
 			if (++i == k) {
 				can_reverse = true;
 				break;
@@ -52,7 +52,6 @@ shared_ptr<ListNode<int>> reverse(shared_ptr<ListNode<int>> L, int k) {
 
 			// Update the head for the next sublist.
 			head = ret.second;
-			cout << "Head entry: " << head->data << endl;
 		} else {
 			// Keep the last n mod k entries intact.
 			break;
@@ -85,7 +84,7 @@ int main() {
 	n4->data = 4; n4->next = n5;
 	n5->data = 5; n5->next = nullptr;
 
-	auto ret = reverse(L, 3);
+	auto ret = reverse(L, 5);
 	print(ret);
 	
 	return 0;
