@@ -35,8 +35,7 @@ bool palindromic(shared_ptr<ListNode<int>> L) {
 	right_head = ret;
 	auto left_head = L;
 	bool is_palindromic = true;
-	half_len = len/2;
-	while (half_len--) {
+	while (left_head && right_head) {
 		if (left_head->data != right_head->data) {
 			is_palindromic = false;
 			break;
