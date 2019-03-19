@@ -40,6 +40,39 @@ shared_ptr<ListNode<int>> cyclic2(shared_ptr<ListNode<int>> L) {
 	return nullptr;
 }
 
+// Use fast and slow iterators.
+shared_ptr<ListNode<int>> cyclic3(shared_ptr<ListNode<int>> L) {
+	shared_ptr<ListNode<int>> fast = L, slow = L;
+
+	while (fast && fast->next && fast->next->next) {
+		slow = slow->next;
+		fast = fast->next->next;
+		if (slow == fast) {
+			// Count number of nodes in the cycle.
+			int num_cycle_nodes = 1;
+			auto tmp = slow->next;
+			while (tmp != slow) {
+				num_cycle_nodes++;
+				tmp = tmp->next;
+			}
+
+			slow = L; fast = L;
+			// Move the fast iterator num_cycle_nodes steps forward.
+			while (num_cycle_nodes--) {
+				fast = fast->next;
+			}
+
+			// Move both slow and fast iterators one-by-one step, until the match.
+			while (slow != fast) {
+				slow = slow->next;
+				fast = fast->next;
+			}
+			return slow;
+		}
+	}
+	return nullptr;
+}
+
 int main() {
 	shared_ptr<ListNode<int>> L(new ListNode<int>);
 	shared_ptr<ListNode<int>> n2(new ListNode<int>);
@@ -51,9 +84,9 @@ int main() {
 	n3->data = 3; n3->next = n4;
 	n4->data = 4; n4->next = n5;
 	n5->data = 5; //n5->next = nullptr;
-	n5->next = n2;
+	n5->next = n3;
 
-	auto ret = cyclic2(L);
+	auto ret = cyclic3(L);
 	if (ret) {
 		cout << "Cycle starts at node " << ret->data << "!" << endl;
 	} else {
