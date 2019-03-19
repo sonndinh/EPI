@@ -22,15 +22,20 @@ shared_ptr<ListNode<int>> cyclic(shared_ptr<ListNode<int>> L) {
 
 // Use 2 iterators. Don't use hash set.
 shared_ptr<ListNode<int>> cyclic2(shared_ptr<ListNode<int>> L) {
-	shared_ptr<ListNode<int>> iter1 = L, iter2;
+	if (!L) return L;
+
+	shared_ptr<ListNode<int>> dummy_head = make_shared<ListNode<int>> (ListNode<int>{0, L});
+	shared_ptr<ListNode<int>> iter1 = L;
+	int count = 1;
 	while (iter1) {
-		iter2 = iter1->next;
-		while (iter2) {
-			if (iter2 == iter1) return iter1;
+		auto iter2 = dummy_head;
+		int remain = count;
+		while (remain--) {
 			iter2 = iter2->next;
+			if (iter2 == iter1 && remain > 0) return iter1;
 		}
-		if (iter2 == nullptr) break;
 		iter1 = iter1->next;
+		count++;
 	}
 	return nullptr;
 }
@@ -46,7 +51,7 @@ int main() {
 	n3->data = 3; n3->next = n4;
 	n4->data = 4; n4->next = n5;
 	n5->data = 5; //n5->next = nullptr;
-	n5->next = n3;
+	n5->next = n2;
 
 	auto ret = cyclic2(L);
 	if (ret) {
