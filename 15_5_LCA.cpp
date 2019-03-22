@@ -8,7 +8,7 @@ BSTNode<int>* lca(const unique_ptr<BSTNode<int>>& root, const unique_ptr<BSTNode
 				  const unique_ptr<BSTNode<int>>& b) {
 	BSTNode<int> *curr = root.get();
 	
-	while (curr) {
+	while (curr != s.get() && curr != b.get()) {
 		if (curr->data > s->data && curr->data < b->data) {
 			break;
 		} else if (curr->data < s->data){
@@ -38,7 +38,8 @@ int main() {
 	root->left->left->left = unique_ptr<BSTNode<int>> (new struct BSTNode<int>);
 	root->left->left->left->data = 50;
 
-	auto &s = root->left->right;
+	//	auto &s = root->left->right;
+	auto &s = root;
 	auto &b = root->right->left;
 	auto ret = lca(root, s, b);
 	cout << "LCA of " << s->data << " and " << b->data << ": " << ret->data << endl;
