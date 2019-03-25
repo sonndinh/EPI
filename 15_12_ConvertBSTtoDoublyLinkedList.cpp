@@ -9,49 +9,54 @@ struct BSTNode {
 
 enum Side {LEFT_SUBTREE, RIGHT_SUBTREE};
 
-// Inorder traverse the BST. Return the right most node for the left subtree or
-// the left most node for the right subtree.
-BSTNode<int>* helper(BSTNode<int> *curr, BSTNode<int> **head, BSTNode<int> *parent, Side side) {
-	if (!curr) return nullptr;
+// Return the left-most and right-most node of the subtree.
+pair<BSTNode<int>*, BSTNode<int>*> helper(BSTNode<int> *curr, BSTNode<int> *parent, Side side) {
+	if (!curr) return {nullptr, nullptr};
 
-	if (side == LEFT_SUBTREE && curr->left == nullptr && *head == nullptr)
-		*head = curr;
-	
-	BSTNode<int> *right_most = helper(curr->left, head, curr, LEFT_SUBTREE);
-	BSTNode<int> *left_most = helper(curr->right, head, curr, RIGHT_SUBTREE);
+	auto left = helper(curr->left, curr, LEFT_SUBTREE);
+	auto right = helper(curr->right, curr, RIGHT_SUBTREE);
 
-	// Rewrite the left pointer to point to previous node, and
-	// the right pointer to point to the next node.
 	if (side == LEFT_SUBTREE) {
-		if (!right_most) {
+		if (right.first == nullptr) {
 			curr->right = parent;
+			parent->left = curr;
 		} else {
-			curr->right = left_most;
+			curr->right = right.first;
+			right.first->left = curr;
 		}
-		curr->left = right_most;
+		curr->left = left.second;
+		if (left.second)
+			left.second->right = curr;
 	}
-	
+
 	if (side == RIGHT_SUBTREE) {
-		if (!left_most) {
+		if (left.second == nullptr) {
 			curr->left = parent;
+			parent->right = curr;
 		} else {
-			curr->left = left_most;
+			curr->left = left.second;
+			left.second->right = curr;
 		}
-		curr->right = right_most;
+		curr->right = right.first;
+		if (right.first)
+			right.first->left = curr;
 	}
-		
-	if ((side == LEFT_SUBTREE && !right_most) || (side == RIGHT_SUBTREE && !left_most)) {
-		return curr;
+
+	BSTNode<int> *tmp1 = left.first, *tmp2 = right.second;
+	if (left.first == nullptr) {
+		tmp1 = curr;
+	}
+	if (right.second == nullptr) {
+		tmp2 = curr;
 	}
 	
-	return (side == LEFT_SUBTREE ? right_most : left_most);
+	return {tmp1, tmp2};
 }
 
 // Convert a BST to a sorted doubly linked list. Return head of the list.
 BSTNode<int>* convert(BSTNode<int> *root) {
-	BSTNode<int> *head = nullptr;
-	helper(root, &head, nullptr, RIGHT_SUBTREE);
-	return head;
+	auto ret = helper(root, nullptr, RIGHT_SUBTREE);
+	return ret.first;
 }
 
 void print_list(BSTNode<int> *head) {
@@ -74,14 +79,6 @@ int main() {
 	root->left->left->data = 2;
 	root->left->right = new BSTNode<int> {0, nullptr, nullptr};
 	root->left->right->data = 5;
-	/*
-	root->right->left = unique_ptr<BSTNode<int>> (new BSTNode<int>);
-	root->right->left->data = 320;
-	root->right->right = unique_ptr<BSTNode<int>> (new BSTNode<int>);
-	root->right->right->data = 400;
-	root->left->left->left = unique_ptr<BSTNode<int>> (new BSTNode<int>);
-	root->left->left->left->data = 50;
-	*/
 
 	auto head = convert(root);
 	print_list(head);
