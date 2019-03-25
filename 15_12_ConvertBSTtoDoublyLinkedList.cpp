@@ -54,7 +54,7 @@ pair<BSTNode<int>*, BSTNode<int>*> helper(BSTNode<int> *curr, BSTNode<int> *pare
 }
 
 // Convert a BST to a sorted doubly linked list. Return head of the list.
-BSTNode<int>* convert(BSTNode<int> *root) {
+BSTNode<int>* bst_to_linked_list(BSTNode<int> *root) {
 	auto ret = helper(root, nullptr, RIGHT_SUBTREE);
 	return ret.first;
 }
@@ -68,7 +68,7 @@ void print_list(BSTNode<int> *head) {
 	cout << endl;
 }
 
-int main() {
+int main_() {
    	BSTNode<int> *root = new BSTNode<int> {0, nullptr, nullptr};
 	root->data = 7;
 	root->left = new BSTNode<int> {0, nullptr, nullptr};
@@ -80,7 +80,7 @@ int main() {
 	root->left->right = new BSTNode<int> {0, nullptr, nullptr};
 	root->left->right->data = 5;
 
-	auto head = convert(root);
+	auto head = bst_to_linked_list(root);
 	print_list(head);
 	return 0;
 }

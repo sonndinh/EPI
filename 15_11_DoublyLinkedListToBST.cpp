@@ -9,6 +9,7 @@ struct ListNode {
 };
 
 // Convert a sublist started at a given node into a BST. Return the root of the BST.
+// Update the pointer to the head of the next sublist.
 shared_ptr<ListNode<int>> convert_helper(shared_ptr<ListNode<int>>& head, int n) {
 	if (n <= 0) {
 		return nullptr;
@@ -16,11 +17,11 @@ shared_ptr<ListNode<int>> convert_helper(shared_ptr<ListNode<int>>& head, int n)
 	
 	auto left_root = convert_helper(head, n/2);
 	auto root = head;
-	auto next_head = head->next;
-	auto right_root = convert_helper(next_head, n - n/2 - 1);
+	head = head->next;
+	auto right_root = convert_helper(head, n - n/2 - 1);
 	root->prev = left_root;
 	root->next = right_root;
-	head = next_head;
+
 	return root;
 }
 
