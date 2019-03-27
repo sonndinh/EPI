@@ -19,23 +19,18 @@ struct FreqCompare {
 	}
 };
 
-void get_code_words_helper(map<char, string>& ret, TreeNode *node, string& code) {
+void get_code_words_helper(map<char, string>& ret, TreeNode *node, string code) {
 	if (node->left == nullptr && node->right == nullptr) {
 		ret.emplace(make_pair(node->c, code));
 		return;
 	}
 
-	code = code + "0";
-	get_code_words_helper(ret, node->left, code);
-	code = code.erase(code.size()-1); // Remove the last digit.
-	code = code + "1";
-	get_code_words_helper(ret, node->right, code);
-	code = code.erase(code.size()-1); // Remove the last digit again.
+	get_code_words_helper(ret, node->left, code + '0');
+	get_code_words_helper(ret, node->right, code + '1');
 }
 
 void get_code_words(map<char, string>& ret, TreeNode *root) {
-	string code;
-	get_code_words_helper(ret, root, code);
+	get_code_words_helper(ret, root, string());
 }
 
 // Return a code book for a set of symbols with their frequencies.
