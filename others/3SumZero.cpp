@@ -19,7 +19,6 @@ vector<tuple<int, int, int>> threesum_zero(vector<int>& A) {
 				if (k == i+1 || (k > i+1 && A[k] != A[k-1])) {
 					if (A[k] + A[l] == sum) {
 						ret.emplace_back(make_tuple(first_elem, A[k], A[l]));
-						cout << first_elem << "," << A[k] << "," << A[l] << endl;
 						k++;
 					} else if (A[k] + A[l] > sum) {
 						l--;
