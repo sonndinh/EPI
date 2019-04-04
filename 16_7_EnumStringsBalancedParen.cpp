@@ -34,9 +34,33 @@ vector<string> matched_parens(int k) {
 	return ret;
 }
 
+// Parameter @left_parens tracks the number of unmatched left parentheses.
+void helper2(vector<string>& ret, string tmp, int remain, int left_parens) {
+	if (remain == 0) {
+		ret.push_back(tmp);
+		return;
+	}
+	
+	if (left_parens < remain) {
+		// Can add a left paren.
+		helper2(ret, tmp + "(", remain-1, left_parens+1);
+	}
+
+	if (left_parens > 0) {
+		// Can add a right paren.
+		helper2(ret, tmp + ")", remain-1, left_parens-1);
+	}
+}
+
+vector<string> matched_parens2(int k) {
+	vector<string> ret;
+	helper2(ret, string(), 2*k, 0);
+	return ret;
+}
+
 int main() {
-	int k = 3;
-	vector<string> ret = matched_parens(k);
+	int k = 4;
+	vector<string> ret = matched_parens2(k);
 	for (string s : ret) {
 		cout << s << "  ";
 	}
