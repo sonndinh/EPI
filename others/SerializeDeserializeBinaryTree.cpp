@@ -37,25 +37,41 @@ string serialize(TreeNode* root) {
 }
 
 // Deserialize a encoded string, assuming pre-order traversal.
-TreeNode* deserialize_preorder(string msg, int pos) {
+TreeNode* deserialize_preorder(string msg, int& pos) {
 	if (pos == msg.size())
 		return nullptr;
 
 	size_t next_comma = msg.find_first_of(",", pos);
 	string str_val = msg.substr(pos, next_comma - pos);
-	if (str_val == "null")
+	pos = next_comma + 1;
+	if (str_val == "null") {
 		return nullptr;
+	}
 	
 	int val = stoi(str_val);
 	TreeNode *node = new TreeNode(val);
-	
+	TreeNode *left = deserialize_preorder(msg, pos);
+	TreeNode *right = deserialize_preorder(msg, pos);
+	node->left = left;
+	node->right = right;
 	return node;
 }
 
 // Deserialize a string to a binary tree.
 TreeNode* deserialize(string msg) {
 	TreeNode *root = nullptr;
-	return deserialize_preorder(msg, 0);
+	int pos = 0;
+	return deserialize_preorder(msg, pos);
+}
+
+void preorder_traverse(TreeNode *node) {
+	if (node) {
+		cout << node->val << ",";
+		preorder_traverse(node->left);
+		preorder_traverse(node->right);
+	} else {
+		cout << "null,";
+	}
 }
 
 int main() {
@@ -66,5 +82,10 @@ int main() {
 	n1->left = n2;
 	string msg = serialize(root);
 	cout << "Encoded message: " << msg << endl;
+
+	TreeNode *decoded_root = deserialize(msg);
+	cout << "Decoded tree: ";
+	preorder_traverse(decoded_root);
+	cout << endl;
 	return 0;
 }
