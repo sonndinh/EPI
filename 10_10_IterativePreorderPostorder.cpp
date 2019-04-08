@@ -52,6 +52,48 @@ void preorder(TreeNode *root) {
 }
 
 void postorder(TreeNode *root) {
+	stack<TreeNode*> s;
+	// The top entry points to the parent of the current node.
+	s.push(nullptr); 
+	TreeNode *node = root, *prev = nullptr;
+
+	while (node) {
+		if (prev == s.top()) {
+			// Going down the tree.
+			if (node->left) {
+				prev = node;
+				node = node->left;
+				s.push(prev);
+			} else if (node->right) {
+				prev = node;
+				node = node->right;
+				s.push(prev);
+			} else {
+				cout << node->val << " ";
+				prev = node;
+				node = s.top();
+				s.pop();
+			}
+		} else if (prev == node->left) {
+			// Going up from the left child.
+			if (node->right) {
+				prev = node;
+				node = node->right;
+				s.push(prev);
+			} else {
+				cout << node->val << " ";
+				prev = node;
+				node = s.top();
+				s.pop();
+			}
+		} else {
+			// Going up from the right child.
+			cout << node->val << " ";
+			prev = node;
+			node = s.top();
+			s.pop();
+		}
+	}
 }
 
 int main() {
@@ -69,5 +111,8 @@ int main() {
 	preorder(root);
 	cout << endl;
 
+	cout << "Postorder traversal: ";
+	postorder(root);
+	cout << endl;
 	return 0;
 }
