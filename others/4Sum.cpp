@@ -1,10 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <unordered_set>
+#include <unordered_map>
+#include <utility>
 using namespace std;
 
 // Return all unique quadruplets that sum to k.
+// O(n^3) implementation.
 vector<vector<int>> quadruplet(vector<int>& arr, int k) {
 	vector<vector<int>> ret;
 	if (arr.size() < 4) return ret;
@@ -34,6 +36,39 @@ vector<vector<int>> quadruplet(vector<int>& arr, int k) {
 		}
 	}
 	
+	return ret;
+}
+
+// Use a hashmap to store all sums of 2 numbers.
+// Time complexity: O(n^2). Space complexity: O(n^2).
+// NOTE: result containing duplicated elements in the input array,
+// so it does NOT do exactly what this problem asks for.
+vector<vector<int>> quadruplet2(vector<int>& arr, int k) {
+	vector<vector<int>> ret;
+	if (arr.size() < k) return ret;
+
+	// Map a value to a list of pairs that sum to that value.
+	unordered_map<int, vector<vector<int>>> table;
+	sort(arr.begin(), arr.end());
+
+	for (int i = 0; i < arr.size()-1; i++) {
+		if (i > 0 && arr[i] == arr[i-1]) continue;
+		for (int j = i+1; j < arr.size(); j++) {
+			if (j > i+1 && arr[j] == arr[j-1]) continue;
+			int sum = arr[i] + arr[j];
+			if (table.find(k - sum) != table.end()) {
+				// Find pairs that sum to the complement of this pair.
+				vector<vector<int>>& tmp = table[k-sum];
+				for (vector<int>& p : tmp) {
+					ret.emplace_back(vector<int>{p[0], p[1], arr[i], arr[j]});
+				}
+			}
+			
+			// Add the current pair to the list of pairs for the corresponding sum.
+			table[sum].emplace_back(vector<int>{arr[i], arr[j]});
+		}
+	}
+
 	return ret;
 }
 
