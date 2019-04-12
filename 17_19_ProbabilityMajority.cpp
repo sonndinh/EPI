@@ -18,11 +18,18 @@ double prob(const vector<double>& arr, int k) {
 			} else {
 				double p_i_1_j_1 = (i < 1 || j < 1) ? 0 : table[i-1][j-1];
 				double p_i_j_1 = j < 1 ? 0 : table[i][j-1];
-				table[i][j] = arr[j] * p_i_1_j_1 + (1-arr[j]) * p_i_j_1;
+				table[i][j] = arr[j-1] * p_i_1_j_1 + (1-arr[j-1]) * p_i_j_1;
 			}
 		}
 	}
 
+	for (auto& vec : table) {
+		for (double d : vec) {
+			cout << d << " ";
+		}
+		cout << endl;
+	}
+	
 	double ret = 0;
 	for (int i = k; i <= n; i++) {
 		ret += table[i][n];
@@ -32,8 +39,8 @@ double prob(const vector<double>& arr, int k) {
 }
 
 int main() {
-	int k = 3;
-	vector<double> arr{.6, .7, .5, .6, .5};
+	int k = 2;
+	vector<double> arr{.6, .7, .5};
 	double ret = prob(arr, k);
 	cout << "Probability of winning: " << ret << endl;
 	return 0;
