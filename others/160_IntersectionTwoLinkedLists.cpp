@@ -16,18 +16,12 @@ public:
         ListNode *currA = headA, *currB = headB;
         while (currA) {
             ++countA;
-            if (currA->next)
-                currA = currA->next;
-            else 
-                break;
+			currA = currA->next;
         }
         
         while (currB) {
             ++countB;
-            if (currB->next)
-                currB = currB->next;
-            else 
-                break;
+			currB = currB->next;
         }
         // No intersection.
         if (currA != currB)
