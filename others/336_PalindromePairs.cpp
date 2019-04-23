@@ -17,7 +17,9 @@ public:
         }
         return rev;
     }
-    
+
+	// Time complexity O(n*m^2). Works better with large number of words,
+	// and words have small length. Space complextiy O(n).
     vector<vector<int>> palindromePairs(vector<string>& words) {
         int n = words.size();
         unordered_map<string, int> str_to_idx;
@@ -56,6 +58,7 @@ public:
     
     // Time complexity O(n^2*m), where n is the number of words,
     // m is the maximum length of a word. This works when n is small compared to m.
+	// Space complexity O(1).
     vector<vector<int>> palindromePairs2(vector<string>& words) {
         vector<vector<int>> ret;
         int n = words.size();
