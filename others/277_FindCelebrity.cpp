@@ -4,6 +4,25 @@ bool knows(int a, int b);
 class Solution {
 public:
     int findCelebrity(int n) {
+        if (n <= 0)
+            return -1;
+        
+        int tmp = 0;
+        for (int i = 1; i < n; ++i) {
+            if (knows(tmp, i)) {
+                tmp = i;
+            }
+        }
+        
+        for (int i = 0; i < n; ++i) {
+            if (i != tmp && (!knows(i, tmp) || knows(tmp, i)))
+                return -1;
+        }
+        
+        return tmp;
+    }
+	
+    int findCelebrity2(int n) {
         unordered_set<int> persons;
         for (int i = 0; i < n; ++i) {
             persons.insert(i);
