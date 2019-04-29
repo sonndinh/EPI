@@ -13,12 +13,12 @@ public:
                 code += to_string(count[j]) + (char)(j + 'a');
                 code += "#";
             }
-            my_map[code].emplace_back(s);
+            my_map[code].emplace_back(move(s));
         }
         
         vector<vector<string>> ret;
         for (auto& p : my_map) {
-            ret.emplace_back(p.second);
+            ret.emplace_back(move(p.second));
         }
         return ret;
     }
