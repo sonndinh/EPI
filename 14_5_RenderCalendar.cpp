@@ -22,18 +22,19 @@ int max_concurrent_events(const vector<Interval>& events) {
 	sort(ends.begin(), ends.end());
 
 	int i = 0, j = 0;
-	int ret = 0;
+	int curr_concurrent_events = 0, max_concurrent_events = 0;
 	for (int i = 0, j = 0; i < n && j < n; ) {
 		if (begins[i] <= ends[j]) {
-			++ret;
+			++curr_concurrent_events;
+			max_concurrent_events = max(curr_concurrent_events, max_concurrent_events);
 			++i;
 		} else {
-			--ret;
+			--curr_concurrent_events;
 			++j;
 		}
 	}
 
-	return ret;
+	return curr_concurrent_events;
 }
 
 int main() {
