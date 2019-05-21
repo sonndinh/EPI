@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_set>
+#include <algorithm>
 using namespace std;
 
 struct Interval {
@@ -21,23 +22,21 @@ struct EndPoint {
 int min_cover(const vector<Interval>& A) {
 	vector<EndPoint> points(2*A.size());
 	for (int i = 0; i < A.size(); ++i) {
-		points[i] = {A[i].left, i, true};
-		points[i+1] = {A[i].right, i, false};
+		points[2*i] = {A[i].left, i, true};
+		points[2*i+1] = {A[i].right, i, false};
 	}
-
+	sort(points.begin(), points.end());
+	
 	unordered_set<int> bag;
 	int ret = 0;
 	for (EndPoint& p : points) {
 		if (p.isLeft) {
 			bag.insert(p.id);
 		} else if (bag.count(p.id) > 0){
-			cout << "Found end point for id: " << p.id << endl;
 			++ret;
 			bag.clear();
 		}
 	}
-	//	if (!bag.empty())
-	//		++ret;
 
 	return ret;
 }
