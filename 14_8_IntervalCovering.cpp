@@ -42,7 +42,8 @@ int min_cover(const vector<Interval>& A) {
 }
 
 int main() {
-	vector<Interval> A{{0, 3}, {2, 6}, {3, 4}, {6, 9}};
+	//	vector<Interval> A{{0, 3}, {2, 6}, {3, 4}, {6, 9}};
+	vector<Interval> A{{1,2}, {2,3}, {3,4}, {2,3}, {3,4}, {4,5}};
 	cout << "Minimum interval covering: " << min_cover(A) << endl;
 	return 0;
 }
