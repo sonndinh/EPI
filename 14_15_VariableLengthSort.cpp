@@ -19,14 +19,14 @@ string variable_length_sort(string& text) {
 	vector<tuple<string&, int, int>> lines;
 	int start = 0;
 	for (int i = 0; i < text.size(); ++i) {
-		if (text[i] == '\0') {
-			lines.emplace_back(make_tuple(text, start, i));
+		if (text[i] == '\n') {
+			lines.emplace_back(text, start, i);
 			start = i+1;
 		}
 	}
 	// Last line may not be followed by a null character.
 	if (start < text.size()) {
-		lines.emplace_back(make_tuple(text, start, text.size()-1));
+		lines.emplace_back(text, start, text.size()-1);
 	}
 
 	CustomLess less;
@@ -43,7 +43,7 @@ string variable_length_sort(string& text) {
 }
 
 int main() {
-	string text = "hahahaha\0kekekeke\0ohohohoh\0";
+	string text = "kekekeke\nhahahaha\nahahahaha\n";
 	string sorted_text = variable_length_sort(text);
 	cout << "Original: " << text << endl;
 	cout << "Sorted:   " << sorted_text << endl;
