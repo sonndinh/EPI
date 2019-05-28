@@ -15,7 +15,7 @@ shared_ptr<TreeNode<int>> lca(shared_ptr<TreeNode<int>> a, shared_ptr<TreeNode<i
 	unordered_set<shared_ptr<TreeNode<int>>> visited;
 	
 	// Alternately move the two nodes upward.
-	while (true) {
+	while (a || b) {
 		if (a) {
 			if (visited.count(a) == 0) {
 				visited.insert(a);
