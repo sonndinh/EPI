@@ -4,6 +4,19 @@
 #include <unordered_set>
 using namespace std;
 
+int get_gcd(int a, int b) {
+	if (a == 0)
+		return b;
+	if (b == 0)
+		return a;
+
+	if (a == b)
+		return a;
+	if (a > b)
+		return get_gcd(a-b, b);
+	return get_gcd(a, b-a);
+}
+
 struct Point {
 	bool operator== (const Point& that) const {
 		return (x == that.x && y == that.y);
