@@ -4,7 +4,8 @@
 using namespace std;
 
 // States of a chess board is encoded using 64 x 4 bits.
-// Each square needs 4 bits to encode. 
+// Each square needs 4 bits to encode whether it is empty or occupied by
+// 1 of the 12 types.
 using state_t = bitset<4>[64];
 using code_t = unsigned long long;
 
@@ -14,7 +15,7 @@ const int prime = 2;
 // @from and @to must be from 0 to 63 for valid squares on the chess board.
 // Output is the hashcode for the updated state.
 code_t hash_func(state_t state, code_t hashcode, int from, int to) {
-	const bitset<4> blank_state(0);
+	const bitset<4> blank_state(0); // Assuming an empty square is encoded by 4 0-bit.
 	bitset<4> orig_source_square = state[from], orig_target_square = state[to];
 	bitset<4> updated_source_square = blank_state, updated_target_square = orig_source_square;
 	
